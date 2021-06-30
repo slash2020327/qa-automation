@@ -1,1 +1,1 @@
-# qa-automation tests auto
+# qa-automation tests test merge conflict
