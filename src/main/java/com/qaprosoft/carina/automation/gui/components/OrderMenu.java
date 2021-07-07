@@ -9,7 +9,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class OrderMenu extends AbstractUIObject {
 
-    @FindBy(xpath = "//*[@id='center_column']/p[2]/a[1]")
+    @FindBy(xpath = "//p[@class='cart_navigation clearfix']/a[@title='Proceed to checkout']")
     private ExtendedWebElement clickButtonCheckout;
 
     @FindBy(xpath = "//button[@name='processAddress']")
@@ -69,8 +69,9 @@ public class OrderMenu extends AbstractUIObject {
         return new OrderPage(driver);
     }
 
-    public void getAlertWindow() {
+    public String getAlertWindow() {
         assertElementPresent(alertWindow);
+        return alertWindow.getText();
     }
 
 }

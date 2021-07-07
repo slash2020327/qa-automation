@@ -37,9 +37,6 @@ public class PersonalDataMenu extends AbstractUIObject {
     @FindBy(xpath = "//input[@name='phone_mobile']")
     private ExtendedWebElement mobilePhone;
 
-    @FindBy(xpath = "//div[@id='center_column']")
-    private ExtendedWebElement centerColumn;
-
     @FindBy(xpath = "//button[@name='submit_search']")
     private ExtendedWebElement buttonSubmit;
 

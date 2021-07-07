@@ -8,8 +8,6 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.Random;
-
 public class CreateAccountMenu extends AbstractUIObject {
 
     @FindBy(xpath = "//input[@id='email_create']")
@@ -22,12 +20,8 @@ public class CreateAccountMenu extends AbstractUIObject {
         super(driver, searchContext);
     }
 
-    public AuthenticationPage inputEmailAdd() {
-        Random random = new Random();
-        int randomGenerator = random.nextInt(100);
-        String email = "TerryWilson";
-        String end = "@gmail.com";
-        inputEmailAddress.type(email + randomGenerator + end);
+    public AuthenticationPage inputEmail(String email ) {
+        inputEmailAddress.type(email);
         return new AuthenticationPage(driver);
     }
 

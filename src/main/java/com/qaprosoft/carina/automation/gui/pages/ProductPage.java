@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class ProductPage extends BasePage {
 
+    private Random random = new Random();
+
     @FindBy(xpath = "//div[@id='layer_cart']")
     private GoToCheckoutPopUp itemAddedToCard;
 
@@ -21,6 +23,9 @@ public class ProductPage extends BasePage {
 
     @FindBy(xpath = "//ul[@id='color_to_pick_list']/li")
     private List<ExtendedWebElement> colorList;
+
+    @FindBy(xpath = "//select[@id='group_1']/option")
+    private List<ExtendedWebElement> sizeList;
 
     @FindBy(xpath = "//button[@name='Submit']")
     private ExtendedWebElement clickToCheckout;
@@ -35,13 +40,24 @@ public class ProductPage extends BasePage {
         return itemAddedToCard;
     }
 
-    public GoToCheckoutPopUp chooseOfClothesParameters(int quantityOfClothes) {
-        Random random = new Random();
+
+    public void inputQuantityOfProduct(){
         int randomItem = random.nextInt(colorList.size());
-        quantity.type(String.valueOf(quantityOfClothes));
-        size.click();
+        quantity.type(String.valueOf(5));
+    }
+
+    public void selectRandomSize() {
+        int randomItem = random.nextInt(sizeList.size());
+        sizeList.get(randomItem).click();
+    }
+
+    public void selectRandomColor() {
+        int randomItem = random.nextInt(colorList.size());
         colorList.get(randomItem).click();
+    }
+
+    public GoToCheckoutPopUp clickCheckoutButton(){
         clickToCheckout.click();
-        return itemAddedToCard;
+        return getCheckoutMenu();
     }
 }

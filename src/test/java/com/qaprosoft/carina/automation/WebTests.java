@@ -9,6 +9,8 @@ import com.qaprosoft.carina.core.foundation.utils.R;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Random;
+
 
 public class WebTests implements IAbstractTest {
 
@@ -34,7 +36,9 @@ public class WebTests implements IAbstractTest {
         Assert.assertTrue(page.isPageOpened(), "Main page isn't opened");
 
         CreateAccountMenu accountMenu = page.getNewAccountMenu();
-        accountMenu.inputEmailAdd();
+        Random random = new Random();
+        int randomGenerator = random.nextInt(100);
+        accountMenu.inputEmail(String.valueOf(randomGenerator) + R.TESTDATA.get("email"));
 
         PersonalInfoPage infoPage = accountMenu.clickButtonCreateAcc();
         Assert.assertTrue(infoPage.isPageOpened(), " Personal information input page isn't opened");
@@ -71,7 +75,10 @@ public class WebTests implements IAbstractTest {
         Assert.assertTrue(gridPage.isPageOpened(), "Product page isn't opened");
         ProductPage productPage = gridPage.openRandomProduct();
 
-        productPage.chooseOfClothesParameters(2);
+        productPage.inputQuantityOfProduct();
+        productPage.selectRandomSize();
+        productPage.selectRandomColor();
+        productPage.clickCheckoutButton();
         OrderPage orderPage = productPage.getCheckoutMenu().clickToCheckout();
         Assert.assertTrue(orderPage.isPageOpened(), "Order page isn't opened");
 
@@ -85,15 +92,15 @@ public class WebTests implements IAbstractTest {
     }
 
     @Test
-    public void availabilityElementsTest() throws NoSuchFieldException {
+    public void availabilityElementsTest() {
         AuthenticationPage page = new AuthenticationPage(getDriver());
         page.open();
         Assert.assertTrue(page.isPageOpened(), "Page isn't opened");
 
         page.getHeader().inputSearchField("Dress");
         SearchPage searchPage = page.getHeader().clickSearchButton();
-        Assert.assertTrue(page.isPageOpened(),"Search page isn't opened");
-        searchPage.checkAvailabilityProductItems();
+        Assert.assertTrue(page.isPageOpened(), "Search page isn't opened");
+        Assert.assertTrue(searchPage.getProductAmount() > 0);
 
     }
 
@@ -103,10 +110,14 @@ public class WebTests implements IAbstractTest {
         page.open();
         Assert.assertTrue(page.isPageOpened(), "Page isn't opened");
 
-        page.getHeader().randomInput();
+        Random random = new Random();
+        int randomize = random.nextInt(100);
+        page.getHeader().inputSearchField(String.valueOf(randomize));
         SearchPage searchPage = page.getHeader().clickSearchButton();
-        Assert.assertTrue(page.isPageOpened(),"Search page isn't opened");
-        searchPage.getAlertWindow();
+        Assert.assertTrue(page.isPageOpened(), "Search page isn't opened");
+        searchPage.validateSearchAlertWindow();
+        Assert.assertEquals(searchPage.getProductAmount(), 0, "Product list isn't empty");
+
     }
 
     @Test
@@ -120,13 +131,15 @@ public class WebTests implements IAbstractTest {
         Assert.assertTrue(gridPage.isPageOpened(), "Product page isn't opened");
         ProductPage productPage = gridPage.openRandomProduct();
 
-        productPage.chooseOfClothesParameters(1);
+        productPage.inputQuantityOfProduct();
+        productPage.selectRandomSize();
+        productPage.selectRandomColor();
+        productPage.clickCheckoutButton();
         OrderPage orderPage = productPage.getCheckoutMenu().clickToCheckout();
         Assert.assertTrue(orderPage.isPageOpened(), "Order page isn't opened");
         orderPage.getOrderMenu().clickIconTrash();
         orderPage.getOrderMenu().getAlertWindow();
-        Assert.assertEquals(orderPage.getEmptinessMessageBox(),"Your shopping cart is empty.");
-
+        Assert.assertTrue(orderPage.isTextPresent("Your shopping cart is empty"));
 
     }
 }

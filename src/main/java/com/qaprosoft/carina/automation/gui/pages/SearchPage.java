@@ -4,6 +4,7 @@ import com.qaprosoft.carina.automation.gui.components.ProductItem;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
+import org.testng.Assert;
 
 import java.util.List;
 
@@ -19,16 +20,25 @@ public class SearchPage extends BasePage {
         super(driver);
     }
 
-    public List<ProductItem> checkAvailabilityProductItems() throws NoSuchFieldException {
-        if (productItems.size() >= 1) {
-            return productItems;
-        } else {
-            throw new NoSuchFieldException();
-        }
+
+    public int getProductAmount(){
+        return productItems.size();
     }
 
-    public void getAlertWindow() {
-        assertElementPresent(alertWindow);
+    private final static String TEXT = "No results were found for your search";
+
+    public void validateSearchAlertWindow() {
+        Assert.assertTrue(isSearchAlertPresent(),"Search alert window is not present");
+        Assert.assertTrue(getSearchAlertText().contains(TEXT),"Text in search alert isn't the same");
+
+    }
+
+    public boolean isSearchAlertPresent() {
+        return alertWindow.isElementPresent();
+    }
+
+    public String getSearchAlertText() {
+        return alertWindow.getText();
     }
 
 
