@@ -28,17 +28,9 @@ public class SearchPage extends BasePage {
     private final static String TEXT = "No results were found for your search";
 
     public void validateSearchAlertWindow() {
-        Assert.assertTrue(isSearchAlertPresent(),"Search alert window is not present");
-        Assert.assertTrue(getSearchAlertText().contains(TEXT),"Text in search alert isn't the same");
+        Assert.assertTrue(isAlertPresent(alertWindow),"Search alert window is not present");
+        Assert.assertTrue(getAlertText(alertWindow).contains(TEXT),"Text in search alert isn't the same");
 
-    }
-
-    public boolean isSearchAlertPresent() {
-        return alertWindow.isElementPresent();
-    }
-
-    public String getSearchAlertText() {
-        return alertWindow.getText();
     }
 
 

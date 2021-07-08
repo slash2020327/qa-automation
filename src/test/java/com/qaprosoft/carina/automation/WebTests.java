@@ -7,6 +7,7 @@ import com.qaprosoft.carina.automation.gui.pages.*;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.utils.R;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -138,8 +139,29 @@ public class WebTests implements IAbstractTest {
         OrderPage orderPage = productPage.getCheckoutMenu().clickToCheckout();
         Assert.assertTrue(orderPage.isPageOpened(), "Order page isn't opened");
         orderPage.getOrderMenu().clickIconTrash();
-        orderPage.getOrderMenu().getAlertWindow();
-        Assert.assertTrue(orderPage.isTextPresent("Your shopping cart is empty"));
+        Assert.assertTrue(orderPage.isTextPresent("Your shopping cart is empty."));
 
     }
+
+    @DataProvider(name = "loginTest")
+    public Object [][] dataProviderMethod(){
+        return new Object[][]{{},{},{}};
+    }
+
+    @Test(dataProvider = "loginTest")
+    public void negativeLoginTest(){
+        AuthenticationPage page = new AuthenticationPage(getDriver());
+        page.open();
+        Assert.assertTrue(page.isPageOpened(), "Page isn't opened");
+
+        page.getHeader().clickOnSignInButton();
+        LoginMenu menu = page.getLoginMenu();
+        Random random = new Random();
+        int randomize = random.nextInt(100);
+        menu.inputEmail(String.valueOf(randomize));
+        menu.inputPassword(R.TESTDATA.get("pass"));
+        AccountPage accountPage = menu.clickSignInButton();
+        accountPage.validateErrorAlertWindow();
+    }
+
 }

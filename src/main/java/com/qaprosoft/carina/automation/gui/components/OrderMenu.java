@@ -30,9 +30,6 @@ public class OrderMenu extends AbstractUIObject {
     @FindBy(xpath = "//i[@class='icon-trash']")
     private ExtendedWebElement iconTrash;
 
-    @FindBy(xpath = "//p[@class='alert alert-warning']")
-    private ExtendedWebElement alertWindow;
-
     public OrderMenu(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
     }
@@ -67,11 +64,6 @@ public class OrderMenu extends AbstractUIObject {
     public OrderPage clickIconTrash() {
         iconTrash.click();
         return new OrderPage(driver);
-    }
-
-    public String getAlertWindow() {
-        assertElementPresent(alertWindow);
-        return alertWindow.getText();
     }
 
 }

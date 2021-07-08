@@ -29,8 +29,5 @@ public class OrderPage extends BasePage{
         return finalMessage.getText();
     }
 
-    public String getEmptinessMessageBox() {
-        return message.getText();
-    }
 
 }
