@@ -76,7 +76,9 @@ public class WebTests implements IAbstractTest {
         Assert.assertTrue(gridPage.isPageOpened(), "Product page isn't opened");
         ProductPage productPage = gridPage.openRandomProduct();
 
-        productPage.inputQuantityOfProduct();
+        Random random = new Random();
+        int randomize = random.nextInt(10);
+        productPage.inputQuantityOfProduct(randomize);
         productPage.selectRandomSize();
         productPage.selectRandomColor();
         productPage.clickCheckoutButton();
@@ -132,7 +134,9 @@ public class WebTests implements IAbstractTest {
         Assert.assertTrue(gridPage.isPageOpened(), "Product page isn't opened");
         ProductPage productPage = gridPage.openRandomProduct();
 
-        productPage.inputQuantityOfProduct();
+        Random random = new Random();
+        int randomize = random.nextInt(10);
+        productPage.inputQuantityOfProduct(randomize);
         productPage.selectRandomSize();
         productPage.selectRandomColor();
         productPage.clickCheckoutButton();
@@ -145,23 +149,21 @@ public class WebTests implements IAbstractTest {
 
     @DataProvider(name = "loginTest")
     public Object [][] dataProviderMethod(){
-        return new Object[][]{{},{},{}};
+        return new Object[][]{{"#abc@","23"},{"$ooo@by.com","$ds"},{"misdadas@by.com","@@@"}};
     }
 
     @Test(dataProvider = "loginTest")
-    public void negativeLoginTest(){
+    public void negativeLoginTest(String login, String pass){
         AuthenticationPage page = new AuthenticationPage(getDriver());
         page.open();
         Assert.assertTrue(page.isPageOpened(), "Page isn't opened");
 
         page.getHeader().clickOnSignInButton();
         LoginMenu menu = page.getLoginMenu();
-        Random random = new Random();
-        int randomize = random.nextInt(100);
-        menu.inputEmail(String.valueOf(randomize));
-        menu.inputPassword(R.TESTDATA.get("pass"));
-        AccountPage accountPage = menu.clickSignInButton();
-        accountPage.validateErrorAlertWindow();
+        menu.inputEmail(login);
+        menu.inputPassword(pass);
+        Assert.assertTrue(page.isInputDataValid(login,pass),"Negative input isn't correct");
+
     }
 
 }

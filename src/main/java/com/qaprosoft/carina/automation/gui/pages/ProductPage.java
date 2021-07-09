@@ -41,10 +41,8 @@ public class ProductPage extends BasePage {
     }
 
 
-    public void inputQuantityOfProduct(){
-
-        int randomItem = random.nextInt(10);
-        quantity.type(String.valueOf(randomItem));
+    public void inputQuantityOfProduct(int random){
+        quantity.type(String.valueOf(random));
     }
 
     public void selectRandomSize() {

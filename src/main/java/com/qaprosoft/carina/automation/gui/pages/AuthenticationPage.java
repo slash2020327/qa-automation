@@ -25,4 +25,12 @@ public class AuthenticationPage extends BasePage {
     public CreateAccountMenu getNewAccountMenu() {
         return accountForm;
     }
+
+
+    public boolean isInputDataValid(String s, String p) {
+        return (s.contains("#")) || (s.contains("$")) || (p.contains("%")) || (p.contains("&"));
+    }
+
+
+
 }
