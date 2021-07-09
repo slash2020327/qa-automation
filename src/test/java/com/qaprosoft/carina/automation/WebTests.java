@@ -86,11 +86,12 @@ public class WebTests implements IAbstractTest {
         Assert.assertTrue(orderPage.isPageOpened(), "Order page isn't opened");
 
         orderPage.getOrderMenu().clickCheckoutButton();
-        orderPage.getOrderMenu().clickCheckoutAddress();
-        orderPage.getOrderMenu().clickTermsOfServiceAndCheckoutButton();
-        orderPage.getOrderMenu().clickPaymentButton();
-        orderPage.getOrderMenu().clickConfirmOrder();
-        Assert.assertEquals(orderPage.getFinalMessage(), "Your order on My Store is complete.");
+        Assert.assertEquals(orderPage.compareTo(),0);
+//        orderPage.getOrderMenu().clickCheckoutAddress();
+//        orderPage.getOrderMenu().clickTermsOfServiceAndCheckoutButton();
+//        orderPage.getOrderMenu().clickPaymentButton();
+//        orderPage.getOrderMenu().clickConfirmOrder();
+//        Assert.assertEquals(orderPage.getFinalMessage(), "Your order on My Store is complete.");
 
     }
 
@@ -149,7 +150,7 @@ public class WebTests implements IAbstractTest {
 
     @DataProvider(name = "loginTest")
     public Object [][] dataProviderMethod(){
-        return new Object[][]{{"#abc@","23"},{"$ooo@by.com","$ds"},{"misdadas@by.com","@@@"}};
+        return new Object[][]{{"#abc@","23"},{"§ooo@by.com","$ds"},{"№misdadas@by.com","@@@"}};
     }
 
     @Test(dataProvider = "loginTest")
@@ -162,8 +163,8 @@ public class WebTests implements IAbstractTest {
         LoginMenu menu = page.getLoginMenu();
         menu.inputEmail(login);
         menu.inputPassword(pass);
-        Assert.assertTrue(page.isInputDataValid(login,pass),"Negative input isn't correct");
-
+        menu.clickSignInButton();
+        page.validateErrorAlertWindow();
     }
 
 }

@@ -28,12 +28,4 @@ public abstract class BasePage extends AbstractPage {
 
     }
 
-    public boolean isAlertPresent(ExtendedWebElement alert) {
-        return alert.isElementPresent();
-    }
-
-    public String getAlertText(ExtendedWebElement alert) {
-        return alert.getText();
-    }
-
 }
