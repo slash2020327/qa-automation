@@ -39,22 +39,22 @@ public class OrderPage extends BasePage {
 
     public UserAddress getBillAddress() {
         UserAddress BillAddress = new UserAddress();
-        BillAddress.setFullName(billingAddress.readName());
-        BillAddress.setCountry(billingAddress.readCountry());
-        BillAddress.setState(billingAddress.readState());
-        BillAddress.setStreet(billingAddress.readStreet());
-        BillAddress.setNumber(billingAddress.readPhone());
+        BillAddress.setFullName(billingAddress.getName());
+        BillAddress.setCountry(billingAddress.getCountry());
+        BillAddress.setState(billingAddress.getState());
+        BillAddress.setStreet(billingAddress.getStreet());
+        BillAddress.setNumber(billingAddress.getPhone());
 
         return BillAddress;
     }
 
     public UserAddress getDeliveryAddress() {
         UserAddress DeliveryAddress = new UserAddress();
-        DeliveryAddress.setFullName(deliveryAddress.readName());
-        DeliveryAddress.setCountry(deliveryAddress.readCountry());
-        DeliveryAddress.setState(deliveryAddress.readState());
-        DeliveryAddress.setStreet(deliveryAddress.readStreet());
-        DeliveryAddress.setNumber(deliveryAddress.readPhone());
+        DeliveryAddress.setFullName(deliveryAddress.getName());
+        DeliveryAddress.setCountry(deliveryAddress.getCountry());
+        DeliveryAddress.setState(deliveryAddress.getState());
+        DeliveryAddress.setStreet(deliveryAddress.getStreet());
+        DeliveryAddress.setNumber(deliveryAddress.getPhone());
 
         return DeliveryAddress;
     }
@@ -68,5 +68,7 @@ public class OrderPage extends BasePage {
                 .compare(getDeliveryAddress(), getBillAddress());
     }
 
-
+    public String getFinalMessage() {
+        return finalMessage.getText();
+    }
 }

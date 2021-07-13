@@ -9,12 +9,18 @@ public class AccountPage extends BasePage {
     @FindBy(xpath = "//div[@id='center_column']/div[@class='alert alert-danger']")
     private ExtendedWebElement alertErrorWindow;
 
+    @FindBy(xpath = "//span[text()='My wishlists']")
+    private ExtendedWebElement myWishListButton;
+
     public AccountPage(WebDriver driver) {
         super(driver);
         setPageURL("index.php?controller=my-account");
     }
 
-    private final static String TEXT = "Invalid email address.";
+    public WishListPage clickMyWishList(){
+        myWishListButton.click();
+        return new WishListPage(driver);
+    }
 
 
 

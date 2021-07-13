@@ -1,5 +1,6 @@
 package com.qaprosoft.carina.automation.gui.pages;
 
+import com.qaprosoft.carina.automation.gui.components.BottomMenu;
 import com.qaprosoft.carina.automation.gui.components.CreateAccountMenu;
 import com.qaprosoft.carina.automation.gui.components.LoginMenu;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
@@ -8,6 +9,9 @@ import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
 public class AuthenticationPage extends BasePage {
+
+    @FindBy(xpath = "//div[@class='footer-container']")
+    private BottomMenu bottomMenu;
 
     @FindBy(xpath = "//form[@id='login_form']")
     private LoginMenu loginForm;
@@ -29,6 +33,10 @@ public class AuthenticationPage extends BasePage {
 
     public CreateAccountMenu getNewAccountMenu() {
         return accountForm;
+    }
+
+    public BottomMenu getBottomMenu(){
+        return bottomMenu;
     }
 
     public static final String TEXT = "Invalid email address.";

@@ -27,23 +27,23 @@ public class AddressItems extends AbstractUIObject {
         super(driver, searchContext);
     }
 
-    public String readName() {
+    public String getName() {
         return nameAddress.getText();
     }
 
-    public String readStreet() {
+    public String getStreet() {
         return streetAddress.getText();
     }
 
-    public String readState() {
+    public String getState() {
         return state.getText();
     }
 
-    public String readCountry() {
+    public String getCountry() {
         return country.getText();
     }
 
-    public String readPhone() {
+    public String getPhone() {
         return mobilePhone.getText();
     }
 
