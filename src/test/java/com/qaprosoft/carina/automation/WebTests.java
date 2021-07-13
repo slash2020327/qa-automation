@@ -7,6 +7,7 @@ import com.qaprosoft.carina.automation.gui.pages.*;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.utils.R;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -75,7 +76,9 @@ public class WebTests implements IAbstractTest {
         Assert.assertTrue(gridPage.isPageOpened(), "Product page isn't opened");
         ProductPage productPage = gridPage.openRandomProduct();
 
-        productPage.inputQuantityOfProduct();
+        Random random = new Random();
+        int randomize = random.nextInt(10);
+        productPage.inputQuantityOfProduct(randomize);
         productPage.selectRandomSize();
         productPage.selectRandomColor();
         productPage.clickCheckoutButton();
@@ -83,6 +86,7 @@ public class WebTests implements IAbstractTest {
         Assert.assertTrue(orderPage.isPageOpened(), "Order page isn't opened");
 
         orderPage.getOrderMenu().clickCheckoutButton();
+        Assert.assertEquals(orderPage.compareTo(), 0,"Addresses are not equal");
         orderPage.getOrderMenu().clickCheckoutAddress();
         orderPage.getOrderMenu().clickTermsOfServiceAndCheckoutButton();
         orderPage.getOrderMenu().clickPaymentButton();
@@ -131,15 +135,94 @@ public class WebTests implements IAbstractTest {
         Assert.assertTrue(gridPage.isPageOpened(), "Product page isn't opened");
         ProductPage productPage = gridPage.openRandomProduct();
 
-        productPage.inputQuantityOfProduct();
+        Random random = new Random();
+        int randomize = random.nextInt(10);
+        productPage.inputQuantityOfProduct(randomize);
         productPage.selectRandomSize();
         productPage.selectRandomColor();
         productPage.clickCheckoutButton();
         OrderPage orderPage = productPage.getCheckoutMenu().clickToCheckout();
         Assert.assertTrue(orderPage.isPageOpened(), "Order page isn't opened");
         orderPage.getOrderMenu().clickIconTrash();
-        orderPage.getOrderMenu().getAlertWindow();
-        Assert.assertTrue(orderPage.isTextPresent("Your shopping cart is empty"));
+        Assert.assertTrue(orderPage.isTextPresent("Your shopping cart is empty."));
 
     }
+
+    @DataProvider(name = "loginTest")
+    public Object[][] dataProviderMethod() {
+        return new Object[][]{{"#abc@", "23"}, {"§ooo@by.com", "$ds"}, {"№misdadas@by.com", "@@@"}};
+    }
+
+    @Test(dataProvider = "loginTest")
+    public void negativeLoginTest(String login, String pass) {
+        AuthenticationPage page = new AuthenticationPage(getDriver());
+        page.open();
+        Assert.assertTrue(page.isPageOpened(), "Page isn't opened");
+
+        page.getHeader().clickOnSignInButton();
+        LoginMenu menu = page.getLoginMenu();
+        menu.inputEmail(login);
+        menu.inputPassword(pass);
+        menu.clickSignInButton();
+        page.validateErrorAlertWindow();
+    }
+
+    @Test
+    public void wishListTest() {
+        AuthenticationPage page = new AuthenticationPage(getDriver());
+        page.open();
+        Assert.assertTrue(page.isPageOpened(), "Page isn't opened");
+
+        page.getHeader().clickOnSignInButton();
+        LoginMenu menu = page.getLoginMenu();
+        menu.inputEmail(R.TESTDATA.get("email"));
+        menu.inputPassword(R.TESTDATA.get("pass"));
+        AccountPage accountPage = menu.clickSignInButton();
+        Assert.assertTrue(accountPage.isPageOpened(), "Account page is not opened");
+        WishListPage wishListPage = accountPage.clickMyWishList();
+        Assert.assertFalse(wishListPage.getWishList().getHistoryWishList(), "Wishlist isn't empty");
+        wishListPage.getWishList().inputNameWishList(R.TESTDATA.get("nameWishList"));
+        wishListPage.getWishList().clickSaveButton();
+        Assert.assertTrue(wishListPage.getWishList().getHistoryWishList(), "Wishlist is empty");
+        BestSellersPage bestSellersPage = wishListPage.getWishList().clickBestSellers();
+        Random random = new Random();
+        int randomize = random.nextInt(bestSellersPage.setProductsSize());
+        ProductPage productPage = bestSellersPage.getRandomProduct(randomize);
+        productPage.clickWishListButton();
+        Assert.assertTrue(productPage.isWishListPopUp(), "There is no wishList pop up");
+        Assert.assertEquals(productPage.getTextWishList(), "Added to your wishlist.");
+        productPage.getWishlistPopUp().clickButtonClose();
+        productPage.getHeader().clickToCustomerAccount().clickMyWishList();
+        try {
+
+            Assert.assertEquals(wishListPage.getWishList().getWishListProducts(), "1");
+
+        } finally {
+
+            wishListPage.getWishList().scriptContent();
+            Assert.assertFalse(wishListPage.getWishList().getHistoryWishList(),"Wishlist isn't empty");
+
+        }
+    }
+
+    @Test
+    public void siteMapTest(){
+        AuthenticationPage page = new AuthenticationPage(getDriver());
+        page.open();
+        Assert.assertTrue(page.isPageOpened(), "Page isn't opened");
+
+        page.getHeader().clickOnSignInButton();
+        LoginMenu menu = page.getLoginMenu();
+        menu.inputEmail(R.TESTDATA.get("email"));
+        menu.inputPassword(R.TESTDATA.get("pass"));
+        AccountPage accountPage = menu.clickSignInButton();
+        Assert.assertTrue(accountPage.isPageOpened(), "Account page isn't opened");
+
+        SiteMapPage siteMapPage = page.getBottomMenu().clickSiteMap();
+        Assert.assertTrue(siteMapPage.getSiteBlock().isPersonalInfPresent(),"Elements are not present");
+        siteMapPage.getSiteBlock().clickSignOut();
+        Assert.assertTrue(siteMapPage.getSiteBlock().isAccInformationPresent(),"Elements are not present");
+
+    }
+
 }
